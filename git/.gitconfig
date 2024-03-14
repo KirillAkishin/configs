@@ -262,8 +262,8 @@
 	subrepo = !sh -c 'git filter-branch --prune-empty --subdirectory-filter $1 master' -
 	human = name-rev --name-only --refs=refs/heads/*
 	#############
+	ic = commit -m 'init commit'
 	fix = commit -m 'minor fixes'
-	cin = commit -m 'init commit'
 	kick = "!f() { git add -A && git commit -m \"minor fixes\" && git push; }; f"
 	kickm = "!f() { git add -A && git commit -m \"$@\" && git push; }; f"
 [filter "lfs"]
