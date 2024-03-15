@@ -26,7 +26,7 @@ fi
 # программы
 ########################################################################################
 ## neofetch
-alias nf='clear && neofetch --jp2a /home/admin/.config/neofetch/pic.jpg --disable title --size 35% && read -n 1 -s -r'
+alias nf='clear && neofetch --jp2a /home/admin/.config/neofetch/pic.png --disable title --size 35% && read -n 1 -s -r'
 
 ## dropbox
 alias dropbox='~/.dropbox-dist/dropboxd'
