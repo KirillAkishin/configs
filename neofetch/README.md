@@ -1,0 +1,1 @@
+Положить в ~/.config/neofetch/.
