@@ -42,3 +42,7 @@ Thumbs.db
 ################
 .vscode
 .ipynb_checkpoints
+
+# Cache #
+################
+__pycache__
