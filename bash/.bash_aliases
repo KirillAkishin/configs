@@ -64,7 +64,7 @@ alias 2st='cd /home/admin/storage'
 alias 2rt='cd /'
 alias 2trash='cd ~/.local/share/Trash/files'
 alias 2git='cd /home/admin/storage/git/'
-alias 2bin='cd /home/admin/storage/bash/'
+alias 2bash='cd /home/admin/storage/bash/'
 alias 2prv='cd /home/admin/storage/private'
 
 ## ML
