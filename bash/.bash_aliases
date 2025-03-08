@@ -4,6 +4,9 @@
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
+alias nano='nano -l'
+alias watch='watch -d'
+alias statuswatch='watch -c SYSTEMD_COLORS=1 systemctl status'
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
@@ -35,7 +38,7 @@ alias dropbox='~/.dropbox-dist/dropboxd'
 alias pcloud='~/.local/bin/pcloud'
 
 ## yandex
-alias yandex='yandex-disk'
+# alias yandex='yandex-disk'
 alias yandex_edit='nano ~/.config/yandex-disk/config.cfg'
 
 ## .bash_aliases
@@ -44,6 +47,7 @@ alias alias-edit="nano /home/admin/.bash_aliases"
 ## python-is-python3
 alias python='python3'
 alias pip='pip3'
+alias pyre='pip freeze > requirements.txt'
 
 ## translate-shell
 alias translator="clear && trans -I -speak"
@@ -64,7 +68,7 @@ alias 2st='cd /home/admin/storage'
 alias 2rt='cd /'
 alias 2trash='cd ~/.local/share/Trash/files'
 alias 2git='cd /home/admin/storage/git/'
-alias 2bash='cd /home/admin/storage/bash/'
+alias 2bin='cd /home/admin/storage/bin/'
 alias 2prv='cd /home/admin/storage/private'
 
 ## ML
