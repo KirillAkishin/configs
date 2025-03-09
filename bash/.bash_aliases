@@ -1,12 +1,32 @@
 
 # common
 ########################################################################################
+alias lc='LC_TIME="en_en.UTF-8"' # execute something with EN-local
+alias r='clear;bash' # refresh
+alias tail-track='clear; tail -f -n 30'
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 alias nano='nano -l'
 alias watch='watch -d'
 alias statuswatch='watch -c SYSTEMD_COLORS=1 systemctl status'
+
+alias dupes='fdupes . -m; fdupes . -t -f -1'
+alias dupes-hard='find . ! -empty -type f -exec md5sum {} + | sort | uniq -w32 -dD'
+
+# see environment variables
+alias vrs='\
+    echo USER=${USER};\
+    echo HOST=${HOST};\
+    echo HOME=${HOME};\
+
+    echo LANG=${LANG};\
+    echo LC_TIME=${LC_TIME};\
+    echo BASH_VERSION=${BASH_VERSION};\
+    echo;\
+
+    cmd=( uname -r); echo kernel=$cmd;\
+    echo LC_TIME=${LC_TIME}'
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
