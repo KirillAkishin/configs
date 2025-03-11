@@ -1,0 +1,25 @@
+#!/bin/sh
+
+function next_upd {
+    echo -n "Update: ";
+    for ((i = 1; i <= $1; i++ )); do
+        sleep 60
+        echo -n "#"
+    done
+    echo -n " Request..."
+    sleep 3
+}
+
+TIMEOUT=${1:-30} # minutes
+REGION=${2:-"Ростов%20на%20дону"}
+# REGION=${2:-47.2249135,39.7022756} # тоже Ростов
+# REGION=${2:-Moscow}
+
+while true; do
+    clear
+    date
+    curl "wttr.in/"$REGION
+    next_upd TIMEOUT
+done
+
+
