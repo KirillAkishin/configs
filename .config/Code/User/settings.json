@@ -1,0 +1,18 @@
+{
+    "workbench.colorTheme": "Monokai",
+    "python.defaultInterpreterPath": "/usr/bin/python3.11",
+    "window.zoomLevel": 3,
+    "notebook.cellToolbarLocation": {
+        "default": "right",
+        "jupyter-notebook": "right"
+    },
+    "notebook.lineNumbers": "on",
+    "python.terminal.activateEnvInCurrentTerminal": true,
+    "files.exclude": {
+        ".directory": true,
+        ".venv/": true,
+        "**/__pycache__/": true,
+        "user1/.gitconfig.user1": true
+    },
+    "telemetry.telemetryLevel": "off"
+}
