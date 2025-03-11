@@ -1,0 +1,6 @@
+#!/bin/sh
+
+# loop-dashboard (~= watch)
+
+cmd="$@"
+while true; do clear;DATE=`date "+%T"`;printf '\033[0;33m%s\e[m\n' $DATE;$cmd;sleep 5; done
