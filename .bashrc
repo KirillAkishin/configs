@@ -3,6 +3,7 @@
 # for examples
 
 #export PROMPT_COMMAND="echo -n \[\$(date +%H:%M:%S)\]\ "
+PATH="$PATH:$HOME/storage/bin"
 
 # If not running interactively, don't do anything
 case $- in
@@ -18,8 +19,8 @@ HISTCONTROL=ignoreboth
 shopt -s histappend
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=1000
-HISTFILESIZE=2000
+HISTSIZE=1000000
+HISTFILESIZE=2000000
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -79,6 +80,11 @@ if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
 
+# user environment variables
+if [ -f ~/.local/bin/.env ]; then
+    . ~/.local/bin/.env
+fi
+
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
@@ -90,31 +96,16 @@ if ! shopt -oq posix; then
   fi
 fi
 
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/admin/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/home/admin/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/admin/miniconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/home/admin/miniconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
-
 #export PS1="\t [\u@\h \W]\\$ \[$(tput sgr0)\]"
 git_branch () { git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'; }
-HOST='\[\033[01;32m\]@\h\[\e[m\]'
+TMP_HOST='\[\033[01;32m\]@\h\[\e[m\]'
 TIME='\[\033[00;33m\]\t\[\e[m\]'
 #TIME='\[\033[00;33m\][\D{%a}.\t]\[\e[m\] '
 #USER='\[\033[01;32m\]'$USER'\[\e[m\]'
-TUSER='\[\033[01;32m\]'$USER'\[\e[m\]'
+TMP_USER='\[\033[01;32m\]'$USER'\[\e[m\]'
 LOCATION='\[\033[01;34m\]\w\[\e[m\]'
 #LOCATION='\[\033[01;34m\]`pwd | sed "s#\(/[^/]\{1,\}/[^/]\{1,\}/[^/]\{1,\}/\).*\(/[^/]\{1,\}/[^/]\{1,\}\)/\{0,1\}#\1_\2#g"`\[\e[m\]'
 BRANCH='\[\033[00;33m\]$(git_branch)\[\033[00m\]\$\[\e[m\] '
-PS1=$TIME\ $TUSER$HOST:$LOCATION$BRANCH
+PS1=$TIME\ $TMP_USER$TMP_HOST:$LOCATION$BRANCH
 PS2='\[\033[01;36m\]>'
 
