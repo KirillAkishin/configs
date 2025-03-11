@@ -1,0 +1,5 @@
+#!/bin/sh
+
+cmd="yt-dlp -f 'ba' -x --audio-format mp3 $1 -o '$STORAGE/music/_new/%(title)s.%(ext)s'"
+echo $cmd
+eval $cmd

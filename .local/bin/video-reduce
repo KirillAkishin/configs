@@ -1,0 +1,5 @@
+#!/bin/sh
+
+cmd="ffmpeg -i '$1' -fs 19.5M _R-'$1'"
+echo $cmd
+eval $cmd

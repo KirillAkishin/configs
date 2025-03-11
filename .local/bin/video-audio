@@ -1,0 +1,58 @@
+#!/bin/sh
+#sudo apt -y install ffmpeg lame
+
+BLACK="\e[30m"
+RED="\e[31m"
+PURPLE="\e[32m"
+BROWN="\e[33m"
+LIME="\e[34m"
+PINK="\e[35m"
+BLUE="\e[36m"
+WHITE="\e[37m"
+DEFAULT="\e[38m"
+ENDCOLOR="\e[0m"
+
+prefix=_
+dst_fmt=.mp3
+dst_folder=$STORAGE/music/_new
+
+while getopts 'f:p:lh' flag; do
+  case "${flag}" in
+	f) dst_folder=${OPTARG}
+	;;
+	p) prefix=${OPTARG}
+	;;
+	l) get_dir_name=$(dirname "${@: -1}")
+	   dst_folder=$get_dir_name
+	;;
+	h)
+	   echo -e "${PINK}EXAMPLES:${ENDCOLOR}"
+	   echo "1) video-audio -p _  -f /home/admin/storage/music/_new /home/admin/Downloads/Telegram\ Desktop/video.mp4"
+	   echo "2) video-audio -l /home/admin/storage/music/_new/video.webm"
+	   echo "3) video-audio /home/admin/storage/music/_new/video.webm"
+	   echo "4) video-audio video.webm"
+	   echo "5) ffmpeg -h [to call ffmpeg help function]"
+	   echo -e "${PINK}---------${ENDCOLOR}"
+	   echo
+	   exit 0
+	;;
+  esac
+done
+
+get_base_name=$(basename "${@: -1}")
+base_name=$get_base_name
+output=$(echo $dst_folder"/"$prefix$base_name | sed -r "s/\.[^\.]+$/$dst_fmt/g")
+
+cmd="ffmpeg -i '${@: -1}' '$output'"
+echo $cmd
+eval $cmd
+
+if [ ! -f "$output" ]; then
+	echo
+        echo -e "${RED}Fail!${ENDCOLOR}"
+	echo "No output file: '$output'"
+else
+        echo
+	echo -e "${LIME}OK!${ENDCOLOR}"
+	echo -e "${WHITE}$output${ENDCOLOR}"
+fi

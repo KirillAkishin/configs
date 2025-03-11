@@ -1,0 +1,20 @@
+#!/bin/bash
+
+LB=${2:-'0'}
+if [ "$LB" != '0' ]; then
+    LB='-ss '$LB
+else
+    LB=''
+fi
+
+RB=${3:-'0'}
+if [ "$RB" != '0' ]; then
+    RB='-to '$RB
+else
+    RB=''
+fi
+
+
+cmd="ffmpeg -i '$1' -vcodec copy -acodec copy $LB $RB _T-'$1'"
+echo $cmd
+eval $cmd

@@ -1,0 +1,9 @@
+#!/bin/sh
+# sudo apt -y install ffmpeg lame
+
+fmt=.mp4
+out=$(echo $1 | sed -r "s/\.[^\.]+$/$fmt/g")
+
+cmd="ffmpeg -i '$1' '$out'"
+echo $cmd
+eval $cmd

@@ -1,0 +1,23 @@
+#!/bin/bash
+
+LB=${2:-'0'}
+if [ "$LB" != '0' ]; then
+    LB='-ss '$LB
+else 
+    LB=''
+fi
+
+RB=${3:-'0'}
+if [ "$RB" != '0' ]; then
+    RB='-to '$RB
+else
+    RB=''
+fi
+
+
+FMT=.mp3
+OUT=$(echo $1 | sed -r "s/\.[^\.]+$/$FMT/g")
+
+CMD="ffmpeg -i '$1' -acodec copy $LB $RB _T-'$OUT'"
+echo $CMD
+eval $CMD

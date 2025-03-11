@@ -1,0 +1,13 @@
+#!/bin/sh
+
+cmd="yt-dlp -f 'bestvideo[filesize<17.4M]+bestaudio[filesize<2.4M]/best[filesize<19.8M]' $1 -o '$STORAGE/video/_new/%(title)s.%(ext)s'"
+echo $cmd
+eval $cmd
+
+#cmd2=$(echo $cmd1 | sed 's/^.* \([^ ][^ ]*\)/\1/g')
+#echo $cmd2
+#eval $cmd2
+
+# cmd2="ffmpeg -i $filename -fs 20M $filename"
+# echo $cmd2
+# eval $cmd2
