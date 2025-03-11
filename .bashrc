@@ -2,8 +2,6 @@
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
-#export PROMPT_COMMAND="echo -n \[\$(date +%H:%M:%S)\]\ "
-PATH="$PATH:$HOME/storage/bin"
 
 # If not running interactively, don't do anything
 case $- in
@@ -75,16 +73,6 @@ xterm*|rxvt*)
     ;;
 esac
 
-# aliases
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
-fi
-
-# user environment variables
-if [ -f ~/.local/bin/.env ]; then
-    . ~/.local/bin/.env
-fi
-
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
@@ -96,16 +84,24 @@ if ! shopt -oq posix; then
   fi
 fi
 
-#export PS1="\t [\u@\h \W]\\$ \[$(tput sgr0)\]"
+
+# aliases
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi
+
+# user environment variables
+if [ -f ~/.bash_env ]; then
+    . ~/.bash_env
+fi
+
 git_branch () { git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'; }
 TMP_HOST='\[\033[01;32m\]@\h\[\e[m\]'
 TIME='\[\033[00;33m\]\t\[\e[m\]'
-#TIME='\[\033[00;33m\][\D{%a}.\t]\[\e[m\] '
-#USER='\[\033[01;32m\]'$USER'\[\e[m\]'
 TMP_USER='\[\033[01;32m\]'$USER'\[\e[m\]'
 LOCATION='\[\033[01;34m\]\w\[\e[m\]'
-#LOCATION='\[\033[01;34m\]`pwd | sed "s#\(/[^/]\{1,\}/[^/]\{1,\}/[^/]\{1,\}/\).*\(/[^/]\{1,\}/[^/]\{1,\}\)/\{0,1\}#\1_\2#g"`\[\e[m\]'
 BRANCH='\[\033[00;33m\]$(git_branch)\[\033[00m\]\$\[\e[m\] '
 PS1=$TIME\ $TMP_USER$TMP_HOST:$LOCATION$BRANCH
 PS2='\[\033[01;36m\]>'
+
 
