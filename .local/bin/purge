@@ -1,0 +1,69 @@
+#!/bin/sh
+
+BLACK="\e[30m"
+RED="\e[31m"
+PURPLE="\e[32m"
+BROWN="\e[33m"
+LIME="\e[34m"
+PINK="\e[35m"
+BLUE="\e[36m"
+WHITE="\e[37m"
+DEFAULT="\e[38m"
+ENDCOLOR="\e[0m"
+
+FULL=false
+SIZE=1024M
+DIR=${HOME}
+
+usage() {
+  echo "Usage: $0 [-f] [-s size] [-d dir] [-help]"
+  echo "  -f full   Full cleaning (default: ${FULL})"
+  echo "  -s size   Min file size for self-deleting (default: ${SIZE})"
+  echo "  -d dir    Search large files from this root (default: ${DIR})"
+  echo "  -h help   Print this help message"
+  echo
+  exit 1
+}
+
+while getopts "fs:h" opt; do
+  case $opt in
+    f)
+      FULL=true
+      ;;
+    s)
+      SIZE=$OPTARG
+      ;;
+    d)
+      DIR=$OPTARG
+      ;;
+    h)
+      usage
+      ;;
+    ?)
+      usage
+      ;;
+  esac
+done
+
+
+if [[ $FULL = true ]]; then
+    sudo rm -rf /tmp/*
+    sudo rm -rf /var/cache/fontconfig/
+    sudo rm -rf /var/cache/apt/
+    sudo rm -rf /var/cache/pacman/
+    sudo rm -rf /var/cache/man/
+
+    sudo rm -rf /var/log/apache2/*
+    sudo rm -rf /var/log/httpd/*
+
+    sudo rm -rf ~/.local/share/Trash/files/
+    # удаление  /usr/src/linux-headers-*  -кроме поселдней версии
+    sudo apt autoremove
+    journalctl --vacuum-size=100M
+    echo "Full cleaning: OK"
+    echo
+fi
+
+echo -e "You can check ${LIME}these files${ENDCOLOR} yourself"
+find $DIR -type f -size +$SIZE -exec ls -lh {} \;
+echo
