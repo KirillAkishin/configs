@@ -1,0 +1,172 @@
+#!/bin/bash
+
+usage() {
+  echo "Usage: $0 [-n] [-d date] [-help]"
+  echo "  -n new    Set a new date (overwriting the old date)"
+  echo "  -d date   Set ..."
+  echo "  -h help   Print this help message"
+  echo
+  exit 1
+}
+
+while getopts "nd:h" opt; do
+  case $opt in
+    n)
+      SECS=$( date +%s )
+      COMM=$( date --date="@"$SECS )
+      sed -ri 's/DATE1.*/DATE1='"$SECS # $COMM"'/' ~/.local/bin/.env
+      echo "New date set: $COMM"
+      exit 0
+      ;;
+    d)
+      SECS=$(date +%s -d $OPTARG)
+      ;;
+    h)
+      usage
+      ;;
+    ?)
+      usage
+      ;;
+  esac
+done
+
+if [ -v $SECS ]
+then
+  SECS=$( grep -m 1 -o 'DATE1.*' ~/.local/bin/.env | cut -f2 -d'=' | cut -f1 -d'#' )
+fi
+
+echo $SECS
+SECS=$(date +%s -d "@"$SECS)
+date --date="@"$SECS
+
+now=$(date +%s $now)
+target=$(date +%s -d "@"$SECS)
+days=$(($target - $now))
+
+if [ $days -lt 0 ]
+then
+  days=$(($days / -86400))
+  echo "$days days have passed."
+else
+  days=$(($days / 86400))
+  echo "There are $days days left to this date."
+fi
+
+
+
+#
+# TDATE=$( grep -m 1 -o 'DATE1.*' .env | cut -f2 -d'=' )
+
+
+
+# TTTDATE=$DATE1
+# echo TTT="$TTTDATE"
+#
+# echo "dsasdas"
+# TIME=18:00
+# DATE=$( date --date="TZ=\"Asia/Taipei\" $TIME" +%F\ %H:%M )
+# echo $DATE;
+# echo "Sadasdasdasdas"
+# TIME=250221103738
+# DATE=$( date --date="TZ=\"Asia/Taipei\" $TIME" +%F\ %y%m%d%H%M%S )
+# echo $DATE;
+#
+#
+#
+# echo "D1="${DATE1}
+# TDATE=$( grep -m 1 -o 'DATE1.*' .env | cut -f2 -d'=' )
+# echo TDATE=$TDATE
+# DATEJ=`echo -n $TDATE`
+# date -d "$DATEJ" +%s
+# date -u -d "$DATEJ" +"%s"
+# NOWDATE=$(date -d "now" +%y%m%d_%H%M%S)
+# echo NOWDATE=$NOWDATE
+# CURDATE=$(TZ=Europe/Moscow date -d "250221_103738" +%y%m%d_%H%M%S)
+# echo CURDATE=$CURDATE
+# CURDATE=$(date -d "TZ=\"Asia/Taipei\" 250221_103738" "+%F %y%m%d_%H%M%S")
+# echo CURDATE=$CURDATE
+# peak_time=$(date -d "$TDATE" +%H%M%S)
+# echo peak_time=$peak_time
+# DATE3=$( date --date="TZ=\"Asia/Taipei\" 103106" +%F\ \"%H%M%S\" )
+# DATE4=$( date --date="TZ=\"Asia/Taipei\" $TIME" +%F\ %H:%M )
+# echo $TIME
+# echo $DATE4
+# # DATE3=$( date --date="TZ=\"Asia/Taipei\" 250221_103106" +%F\ %y%m%d_%H%M%S )
+# echo $DATE3
+# echo
+#
+# # TTDATE=$( date -d "${TDATE}" )
+# date -d $TDATE
+# CMD='date -d '$TDATE' +"%y%m%d_%H%M%S"'
+# echo $CMD
+# eval $CMD
+#
+# CMD='echo '$TDATE
+# echo $CMD
+# eval $CMD
+#
+# $( date -d ${TDATE} +"%y%m%d_%H%M%S" )
+# date "+%d-%m-%C%y %H:%M:%S" -d${TDATE}
+#
+# # TTDATE=$( date --date="TZ=\"GMT\" ${TDATE}" "+%Y-%m-%d %H:%M:%S" )
+# # TTDATE=$( LC_TIME="en_en.UTF-8" TZ=Europe/Moscow date -d "$TDATE" )
+# # TTDATE=$(date --date=${TDATE})
+# echo TT=$TTDATE
+# echo "dadas"
+
+# NDATE=$( date --rfc-3339=seconds )
+
+
+# days=$(( (NDATE - TDATE) / 86400 ))
+
+# sdate=$(date --date="$start_date" '+%s')
+# edate=$(date --date="$end_date"   '+%s')
+# days=$(( (edate - sdate) / 86400 ))
+# echo "$days days between $start_date and $end_date"
+
+
+# start_date="March  1, 2018"
+# end_date="Jan 31, 2019"
+#
+# DATE1=$(date --date ${1-now})
+# DATE2=$(date --date ${1-now +%j})
+# echo $DATE1
+# echo $DATE2
+#
+# DATE3=49
+# DATE4=$(( (DATE3 + 2) % 4 ))
+# echo $DATE4
+#
+# sdate=$(date --date="$start_date" '+%s')
+# edate=$(date --date="$end_date"   '+%s')
+# days=$(( (edate - sdate) / 86400 ))
+# echo "$days days between $start_date and $end_date"
+
+
+
+
+
+# for inum in $*
+# do
+#     [[ "$inum" =~ ^[0-9]{1,4}$ ]]  ||  { echo "Invalid issue number: $inum"; continue; }
+#
+#     month=$(date --date="March 1, 2018 +$((inum - 284)) month" +'%B')
+#     year=$(date --date="March 1, 2018 +$((inum - 284)) month" +'%Y')
+#     printf "Issue %d is from %s, %s\n" $inum $month $year
+# done
+
+
+
+# echo -n "Enter start date in yymmdd or yymmdd format: "
+# read start
+# echo -n "Enter end date in yymmdd or yymmdd format: "
+# read end
+# echo $end
+# echo $start
+#
+# START_DATE=$(date +"%y%m%d")
+# END_DATE=$(date +"%y%m%d")
+#
+#
+# echo $(( ($(date —date="$end" +%s) - $(date —date="$start" +%s) )/(60*60*24) ))
+# date +"%y%m%d"

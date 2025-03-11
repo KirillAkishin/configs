@@ -1,0 +1,18 @@
+#!/bin/bash
+
+OFFSET=${1-2}
+PERIOD=${2-4}
+NDAYS=$(( 10#$(date --date ${3-now +%j}) ))
+echo OFFSET=$OFFSET " " PERIOD=$PERIOD " " NDAYS=$NDAYS
+
+MODULO=$(( (NDAYS + OFFSET) % PERIOD ))
+
+if [[ $MODULO -eq 0 ]]
+then
+    echo "TODAY:" $( date --date now '+%y%m%d (%A)' )
+else
+    echo "wait:" $(( $PERIOD-$MODULO ))
+fi
+
+
+

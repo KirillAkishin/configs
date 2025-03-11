@@ -1,0 +1,13 @@
+#!/bin/sh
+
+NUM=${1-60}
+SLP=${2-1}
+START=${3-"Progress: "}
+FINISH=${4-" Done!"}
+
+echo -n $START "";
+for ((i = 1; i <= $NUM; i++ )); do
+    sleep $SLP
+    echo -n "#"
+done
+echo "" $FINISH

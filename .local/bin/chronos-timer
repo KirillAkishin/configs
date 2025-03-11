@@ -1,0 +1,28 @@
+#!/bin/sh
+
+TOTAL_MINS=${1-60}
+PERC=$(( $TOTAL_MINS*60*10/100 ))
+CNT=0
+MIN_CNT=0
+SEC_CNT=0
+
+clear
+
+for ((i = 1; i <= $TOTAL_MINS; i++ )); do
+    for ((j = 1; j <= 60/10; j++ )); do
+        for ((k = 1; k <= 10; k++ )); do
+            for ((l = 1; l <= 10; l++ )); do
+                echo -n "#"
+                sleep 0.1
+                CNT=$(( CNT+1 ))
+            done
+            SEC_CNT=$(( SEC_CNT+1 ))
+#             echo -n $SEC_CNT $CNT $TOT_TICS
+            echo -n " "
+        done
+        echo -n "("$(( CNT/PERC ))"%)"
+        echo
+    done
+    echo
+done
+
