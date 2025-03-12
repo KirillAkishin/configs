@@ -1,0 +1,19 @@
+#!/bin/bash
+
+ENCODING="utf-8"
+STRING=$@
+
+if [[ $STRING =~ ^[\ a-zA-Z-]+$ ]]; then
+   LANG="en"
+elif [[ $STRING =~ ^[\ а-яёА-ЯЁ-]+$ ]] ; then
+   LANG="ru"
+else
+   echo "ERROR"
+   exit 1
+fi
+
+CMD="echo '$STRING' | aspell --lang='$LANG' --encoding='$ENCODING' -a | tail -n +2 | head -n -1"
+
+echo $CMD
+echo
+eval $CMD
