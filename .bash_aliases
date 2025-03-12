@@ -40,7 +40,7 @@ if [ -x /usr/bin/dircolors ]; then
     #alias dir='dir --color=auto'
     #alias vdir='vdir --color=auto'
 
-    alias grep='grep --color=auto'
+    alias grep='grep --color=auto -n'
     alias fgrep='fgrep --color=auto'
     alias egrep='egrep --color=auto'
 fi
@@ -50,6 +50,7 @@ fi
 # программы
 ########################################################################################
 ## neofetch
+# alias nf='clear && neofetch --jp2a $HOME/.config/neofetch/pic.png --disable title --size 35% && read -n 1 -s -r'
 alias nf='clear && neofetch --jp2a $HOME/.config/neofetch/pic.png --disable title --size 90% && read -n 1 -s -r'
 
 ## dropbox
@@ -66,7 +67,7 @@ alias nf='clear && neofetch --jp2a $HOME/.config/neofetch/pic.png --disable titl
 alias alias-edit="nano $HOME/.bash_aliases"
 
 ## python-is-python3
-alias python='python3.11'
+alias python='python3'
 alias pip='pip3'
 alias pyre='pip freeze > requirements.txt'
 
@@ -94,15 +95,6 @@ alias 2gt0='cd $STORAGE/git/user0'
 alias 2gt1='cd $STORAGE/git/user1'
 # alias 2prv='cd /home/admin/storage/private'
 
-## ML
-# alias 2ml='ssh -i ~/.ssh/id_rsa admin.akishin@172.20.40.8 -L 8890:127.0.0.1:8890'
-# alias 2ml_p='ssh -i ~/.ssh/id_rsa admin.akishin@172.20.40.8 '
-## analytic (1/2)
-# alias 2an='ssh analytic@analytics.im.perekrestok.ru -L 8870:127.0.0.1:8870'
-# alias 2an_p='ssh analytic@analytics.im.perekrestok.ru '
-## analytic (2/2)
-# alias 2tg='ssh analytic@analytics.im.perekrestok.ru/home/analytic/telegram_bots -L 8870:127.0.0.1:8870 && cd telegram_bots'
-# alias 2tg_p='ssh analytic@analutics.im.perekrestok.ru '
 ########################################################################################
 
 

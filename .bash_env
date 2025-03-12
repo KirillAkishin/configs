@@ -10,3 +10,54 @@ export PATH=$(printf "%s" "$PATH:$BIN:$BIN/private" | awk -v RS=':' '!a[$1]++ { 
 DATE1=1740423837 # Пн 24 фев 2025 22:03:57 MSK
 DATE2="Jan 31, 2019" # test date
 
+
+###################################
+
+# STORAGE=$HOME/storage
+# st=$STORAGE
+#
+# MUSIC=$STORAGE/music
+# mu=$MUSIC
+#
+# VIDEOS=$STORAGE/videos
+# videos=$VIDEOS
+#
+# PICS=$STORAGE/pics
+# pics=$PICS
+#
+# BOOKS=$STORAGE/books
+# bo=$BOOKS
+#
+# BIN=$STORAGE/bin
+# bin=$BIN
+#
+# GIT=$STORAGE/git
+# git=$GIT
+#
+# DOWNLOADS=$HOME/Downloads
+# dl=$DOWNLOADS
+#
+# TELEGRAM=$HOME/Downloads/Telegram\ Desktop
+# tg=$TELEGRAM
+#
+# TRASH=$HOME/.local/share/Trash/files
+# trash=$TRASH
+#
+# bashrc=$HOME/.bashrc
+# bash_aliases=$HOME/.bash_aliases
+# bash_env=$HOME/.bash_env
+# bash_history=$HOME/.bash_history
+#
+###################################
+#
+# BLACK="\e[30m"
+# RED="\e[31m"
+# PURPLE="\e[32m"
+# BROWN="\e[33m"
+# LIME="\e[34m"
+# PINK="\e[35m"
+# BLUE="\e[36m"
+# WHITE="\e[37m"
+# ENDCOLOR="\e[0m"
+#
+###################################
