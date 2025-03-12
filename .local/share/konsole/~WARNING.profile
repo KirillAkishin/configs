@@ -1,16 +1,16 @@
 [Appearance]
-ColorScheme=my1
-Font=Hack,22,-1,5,75,0,0,0,0,0,Bold
-TabColor=128,0,0
+ColorScheme=~WARNING
+Font=OCR A Std,24,-1,5,50,0,0,0,0,0
+TabColor=128,64,0
 
 [Cursor Options]
-CursorShape=0
-CustomCursorColor=255,64,0
+CursorShape=1
+CustomCursorColor=255,0,0
 UseCustomCursorColor=true
 
 [General]
-Icon=edit-delete-shred
-Name=my-DANGER
+Icon=data-warning
+Name=~WARNING
 Parent=FALLBACK/
 TerminalColumns=110
 
