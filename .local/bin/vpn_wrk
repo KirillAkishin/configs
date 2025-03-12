@@ -1,0 +1,14 @@
+#!/bin/sh
+
+NS0=8.8.8.8
+NS1=8.8.8.8
+NS2=8.8.8.8
+OVPN=test.ovpn
+
+sudo echo "nameserver  $NS0
+nameserver  $NS1
+nameserver $NS2
+options edns0 trust-ad
+search IGD_Rostelecom" > /etc/resolv.conf &&
+
+sudo openvpn --config $STORAGE/Documents/$OVPN
