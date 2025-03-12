@@ -1,0 +1,29 @@
+#!/bin/bash
+
+PORT=8870
+USER=analytic
+ADDRESS=server.org
+
+usage() {
+  echo "Usage: $0 [-p PORT] [-u USER] [-a ADDRESS] [-help]"
+  echo "  -p PORT       Set PORT as port"
+  echo "  -p USER       Set USER as user"
+  echo "  -a ADDRESS    Set ADDRESS as address"
+  echo "  -h help       Print this help message"
+  echo
+  exit 1
+}
+
+while getopts p:u:a:h opt; do
+  case $opt in
+    p) PORT=${OPTARG};;
+    u) USER=${OPTARG};;
+    a) ADDRESS=${OPTARG};;
+    h) usage;;
+    ?) usage;;
+  esac
+done
+
+cmd="ssh $USER@$ADDRESS -L $PORT:127.0.0.1:$PORT"
+echo $cmd
+$cmd
