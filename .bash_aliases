@@ -50,7 +50,7 @@ fi
 # программы
 ########################################################################################
 ## neofetch
-alias nf='clear && neofetch --jp2a /home/admin/.config/neofetch/pic.png --disable title --size 90% && read -n 1 -s -r'
+alias nf='clear && neofetch --jp2a $HOME/.config/neofetch/pic.png --disable title --size 90% && read -n 1 -s -r'
 
 ## dropbox
 # alias dropbox='~/.dropbox-dist/dropboxd'
@@ -63,7 +63,7 @@ alias nf='clear && neofetch --jp2a /home/admin/.config/neofetch/pic.png --disabl
 # alias yandex_edit='nano ~/.config/yandex-disk/config.cfg'
 
 ## .bash_aliases
-alias alias-edit="nano /home/admin/.bash_aliases"
+alias alias-edit="nano $HOME/.bash_aliases"
 
 ## python-is-python3
 alias python='python3.11'
@@ -83,13 +83,15 @@ alias pyre='pip freeze > requirements.txt'
 # навигация
 ########################################################################################
 ## локалка
-alias 2dl='cd /home/admin/Downloads'
-alias 2hm='cd /home/admin'
-alias 2st='cd /home/admin/storage'
 alias 2rt='cd /'
-alias 2trash='cd ~/.local/share/Trash/files'
-alias 2git='cd /home/admin/storage/git/'
-alias 2bin='cd /home/admin/storage/bin/'
+alias 2hm='cd $HOME'
+alias 2dl='cd $HOME/Downloads'
+alias 2trash='cd $HOME/.local/share/Trash/files'
+alias 2st='cd $STORAGE'
+alias 2bin='cd $STORAGE/bin/'
+alias 2gt='cd $STORAGE/git/'
+alias 2gt0='cd $STORAGE/git/user0'
+alias 2gt1='cd $STORAGE/git/user1'
 # alias 2prv='cd /home/admin/storage/private'
 
 ## ML
