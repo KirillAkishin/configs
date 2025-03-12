@@ -1,0 +1,10 @@
+#!/bin/sh
+# disable
+
+SERVICE="$@"
+cmd="sudo systemctl restart $SERVICE"
+echo $cmd; eval $cmd
+
+# cmd="sudo journalctl --follow -u $SERVICE"
+cmd="sudo systemctl status $SERVICE"
+while true; do clear;DATE=`date "+%T"`;printf '\033[0;33m%s\e[m\n' $DATE;$cmd;sleep 5; done
