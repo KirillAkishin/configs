@@ -1,0 +1,33 @@
+#!/bin/sh
+
+# running jupyter-notebook
+
+PORT=8880
+FOLDER=.
+
+usage() {
+  echo "Usage: $0 [-p PORT] [-f FOLDER] [-g] [-h]"
+  echo "  -p PORT       Set PORT as port"
+  echo "  -p FOLDER     Set FOLDER as root"
+  echo "  -g GIT        Set git folder as root"
+  echo "  -h help       Print this help message"
+  echo
+  exit 1
+}
+
+while getopts p:f:g flag
+do
+    case "${flag}" in
+        p) PORT=${OPTARG};;
+        f) FOLDER=${OPTARG};;
+        g) FOLDER=$STORAGE/git/user0;;
+    esac 
+done
+
+cmd="cd $FOLDER"
+echo $cmd
+$cmd
+
+cmd="jupyter-notebook --port $PORT"
+echo $cmd
+$cmd
