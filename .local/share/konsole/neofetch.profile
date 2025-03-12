@@ -7,5 +7,8 @@ Icon=openSUSE-distributor-logo
 Name=neofetch
 Parent=FALLBACK/
 
+[Scrolling]
+ScrollBarPosition=2
+
 [Terminal Features]
 BlinkingCursorEnabled=true
