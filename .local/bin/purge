@@ -19,13 +19,13 @@ usage() {
   echo "Usage: $0 [-f] [-s size] [-d dir] [-help]"
   echo "  -f full   Full cleaning (default: ${FULL})"
   echo "  -s size   Min file size for self-deleting (default: ${SIZE})"
-  echo "  -d dir    Search large files from this root (default: ${DIR})"
+  echo "  -d dir    Search large files from DIR root (default: ${DIR})"
   echo "  -h help   Print this help message"
   echo
   exit 1
 }
 
-while getopts "fs:h" opt; do
+while getopts "fs:d:h" opt; do
   case $opt in
     f)
       FULL=true
