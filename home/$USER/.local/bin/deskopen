@@ -1,31 +1,31 @@
 #!/bin/bash
+# /etc/bash_completion.d/deskopen
 
 usage() {
-  echo "Usage: $0 [-s] [-h] [FILE]"
-  echo "  -s short  Use short names"
-  echo "  -h help   Print this help message"
+  echo "Usage: $0 [-s] [-S] [-h] [FILE]"
+  echo "  -s shortest Use shortest names"
+  echo "  -S short    Use short names"
+  echo "  -h help     Print this help message"
   echo
   exit 1
 }
 
-foo() {
-  echo gio launch $1
+bad_args() {
+  usage
 }
 
-bad_args() {
-#   echo $LIST
-  usage
+foo() {
+  gio launch $1
 }
 
 APP=${@: -1}
 DIR=/var/lib/flatpak/exports/share/applications
 LIST=$( ls $DIR )
-# TEST=$( ls $DIR | sed -e 's/.desktop//g' )
 SHORT=false
 
-while getopts "sh" opt; do
+while getopts "sSh" opt; do
   case $opt in
-    s)
+    s|S)
       SHORT=true
       ;;
     h)
@@ -37,18 +37,33 @@ while getopts "sh" opt; do
   esac
 done
 
+
 if [[ $SHORT = true ]]; then
   if (( $# != 2 )); then
     bad_args
   fi
-  case $APP in
-    firefox)
-      APP="org.mozilla.firefox.desktop"
-    ;;
-    *)
-      echo "Unknown: $APP"
-    ;;
-  esac
+
+  if [[ "$1" == "-S" ]]; then
+    APP=$2".desktop"
+  fi
+
+  if [[ "$1" == "-s" ]]; then
+    case $APP in
+      firefox)
+        APP="org.mozilla.firefox.desktop"
+      ;;
+      telegram)
+        APP="org.telegram.desktop.desktop"
+      ;;
+      code)
+        APP="com.visualstudio.code.desktop"
+      ;;
+      *)
+        echo "Unknown: $APP"
+      ;;
+    esac
+  fi
+
 else
   if (( $# != 1 )); then
     bad_args
@@ -60,5 +75,4 @@ echo APP = $APP
 echo PATH = $DIR/$APP
 echo LIST = $LIST
 
-complete -W $LIST foo
 foo $DIR/$APP

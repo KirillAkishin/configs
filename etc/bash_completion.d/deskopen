@@ -1,0 +1,26 @@
+# $HOME/.local/bin/deskopen
+
+function _deskopen()
+{
+  DIR=/var/lib/flatpak/exports/share/applications
+  latest="${COMP_WORDS[$COMP_CWORD]}"
+  prev="${COMP_WORDS[$COMP_CWORD - 1]}"
+  words=""
+  case "${prev}" in
+    deskopen)
+      words=$( ls $DIR )
+      ;;
+    -s)
+      words="telegram firefox code"
+      ;;
+    -S)
+      words=$( ls $DIR | sed -e 's/.desktop$//g' )
+      ;;
+    *);;
+  esac
+
+  COMPREPLY=($(compgen -W "$words" -- $latest))
+  return 0
+}
+
+complete -F _deskopen deskopen
