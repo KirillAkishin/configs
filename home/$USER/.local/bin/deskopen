@@ -1,0 +1,64 @@
+#!/bin/bash
+
+usage() {
+  echo "Usage: $0 [-s] [-h] [FILE]"
+  echo "  -s short  Use short names"
+  echo "  -h help   Print this help message"
+  echo
+  exit 1
+}
+
+foo() {
+  echo gio launch $1
+}
+
+bad_args() {
+#   echo $LIST
+  usage
+}
+
+APP=${@: -1}
+DIR=/var/lib/flatpak/exports/share/applications
+LIST=$( ls $DIR )
+# TEST=$( ls $DIR | sed -e 's/.desktop//g' )
+SHORT=false
+
+while getopts "sh" opt; do
+  case $opt in
+    s)
+      SHORT=true
+      ;;
+    h)
+      usage
+      ;;
+    ?)
+      usage
+      ;;
+  esac
+done
+
+if [[ $SHORT = true ]]; then
+  if (( $# != 2 )); then
+    bad_args
+  fi
+  case $APP in
+    firefox)
+      APP="org.mozilla.firefox.desktop"
+    ;;
+    *)
+      echo "Unknown: $APP"
+    ;;
+  esac
+else
+  if (( $# != 1 )); then
+    bad_args
+  fi
+fi
+
+echo DIR = $DIR
+echo APP = $APP
+echo PATH = $DIR/$APP
+echo LIST = $LIST
+
+complete -W $LIST foo
+foo $DIR/$APP
