@@ -1,32 +1,34 @@
 #!/bin/bash
 # /etc/bash_completion.d/deskopen
 
+DIR_FP=/var/lib/flatpak/exports/share/applications
+DIR_UR=/usr/share/applications
+DIR=$DIR_FP
+
 usage() {
-  echo "Usage: $0 [-s] [-S] [-h] [FILE]"
-  echo "  -s shortest Use shortest names"
-  echo "  -S short    Use short names"
+  echo "Usage: $0 [OPTION] [FILE]"
+  echo "  -u user     Search in /usr/share/applications"
   echo "  -h help     Print this help message"
   echo
   exit 1
 }
 
-bad_args() {
-  usage
+gio_launch() {
+  NAME=$1
+  if [ ! -f $NAME ]; then
+    NAME=$NAME.desktop
+    if [ ! -f $NAME ]; then
+      echo "File not found!"
+      exit 1
+    fi
+  fi
+  gio launch $NAME
 }
 
-foo() {
-  gio launch $1
-}
-
-APP=${@: -1}
-DIR=/var/lib/flatpak/exports/share/applications
-LIST=$( ls $DIR )
-SHORT=false
-
-while getopts "sSh" opt; do
+while getopts "uh" opt; do
   case $opt in
-    s|S)
-      SHORT=true
+    u)
+      DIR=$DIR_UR
       ;;
     h)
       usage
@@ -37,42 +39,7 @@ while getopts "sSh" opt; do
   esac
 done
 
+gio_launch $DIR/${@: -1}
 
-if [[ $SHORT = true ]]; then
-  if (( $# != 2 )); then
-    bad_args
-  fi
 
-  if [[ "$1" == "-S" ]]; then
-    APP=$2".desktop"
-  fi
 
-  if [[ "$1" == "-s" ]]; then
-    case $APP in
-      firefox)
-        APP="org.mozilla.firefox.desktop"
-      ;;
-      telegram)
-        APP="org.telegram.desktop.desktop"
-      ;;
-      code)
-        APP="com.visualstudio.code.desktop"
-      ;;
-      *)
-        echo "Unknown: $APP"
-      ;;
-    esac
-  fi
-
-else
-  if (( $# != 1 )); then
-    bad_args
-  fi
-fi
-
-echo DIR = $DIR
-echo APP = $APP
-echo PATH = $DIR/$APP
-echo LIST = $LIST
-
-foo $DIR/$APP

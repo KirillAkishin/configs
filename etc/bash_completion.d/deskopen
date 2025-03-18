@@ -2,19 +2,18 @@
 
 function _deskopen()
 {
-  DIR=/var/lib/flatpak/exports/share/applications
+  DIR_FP=/var/lib/flatpak/exports/share/applications
+  DIR_UR=/usr/share/applications
+#   LIST=$( { ls $DIR_UR & ls $DIR_FP; } | sort | uniq -u )
   latest="${COMP_WORDS[$COMP_CWORD]}"
   prev="${COMP_WORDS[$COMP_CWORD - 1]}"
   words=""
   case "${prev}" in
     deskopen)
-      words=$( ls $DIR )
+      words=$( ls $DIR_FP | sed -e 's/.desktop$//g' )
       ;;
-    -s)
-      words="telegram firefox code"
-      ;;
-    -S)
-      words=$( ls $DIR | sed -e 's/.desktop$//g' )
+    -u)
+      words=$( ls $DIR_UR | sed -e 's/.desktop$//g' )
       ;;
     *);;
   esac
