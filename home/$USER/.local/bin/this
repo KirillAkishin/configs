@@ -25,15 +25,26 @@ done
 FILS0=$( find . -maxdepth 1 -type f | wc -l )
 DIRS0=$( find . -maxdepth 1 -type d | wc -l )
 DIRS0="$((DIRS0 - 1))"
-echo -e "Current directory:\\t" $DIRS0 "directories," $FILS0 "files"
+echo -e "Current directory:" $DIRS0 "directories," $FILS0 "files"
 find . -maxdepth 1 -type f -print0 | xargs -0 file --mime-type -b 2> /dev/null | sort | uniq -c
 
-echo -e "\\n-----------------------------------------------\\n"
+echo -e "\\nEmpty files:"
+find . -maxdepth 1 -empty -exec echo -e "\\t"{} \;
 
-FILS1=$( find . -type f | wc -l )
-DIRS1=$( find . -type d | wc -l )
-DIRS1="$((DIRS1 - 1))"
-echo -e "Complete file tree:\\t" $DIRS1 "directories," $FILS1 "files"
-find . -type f -print0 | xargs -0 file --mime-type -b 2> /dev/null | sort | uniq -c
+echo -e "\\nBig files:"
+find . -size +1G -exec echo -e "\\t"{} \;
 
+echo -e "\\nRecently modified files (3 days):"
+# find . -maxdepth 1 -type f -mtime -7 | xargs ls -l
+find . -maxdepth 1 -type f -mtime -3 -exec echo -e "\\t"{} \;
 
+echo -e "\\nDuplicates:"
+fdupes . -m; fdupes . -t -f -1
+
+# echo -e "\\n-----------------------------------------------\\n"
+#
+# FILS1=$( find . -type f | wc -l )
+# DIRS1=$( find . -type d | wc -l )
+# DIRS1="$((DIRS1 - 1))"
+# echo -e "Complete file tree:\\t" $DIRS1 "directories," $FILS1 "files"
+# find . -type f -print0 | xargs -0 file --mime-type -b 2> /dev/null | sort | uniq -c
