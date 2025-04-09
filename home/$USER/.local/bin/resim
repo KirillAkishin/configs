@@ -1,0 +1,62 @@
+#!/bin/bash
+
+usage() {
+  echo "Usage: $0 [OPTION] [FILE]"
+  echo "  -h help     Print this help message"
+  echo "  -d dir      Output directory"
+  echo "  -w width    Set image width"
+  echo "  -m minimum  This width is minimum?"
+  echo
+  exit 1
+}
+
+WIDTH="700"
+DIR="."
+MINIMUM=false
+
+NOPTS=0
+while getopts "hw:d:m" opt; do
+  case $opt in
+    h)
+      usage
+      ;;
+    w)
+      WIDTH=${OPTARG}
+      NOPTS=$((NOPTS+2))
+      ;;
+    d)
+      DIR=${OPTARG}
+      NOPTS=$((NOPTS+2))
+      ;;
+    m)
+      MINIMUM=true
+      NOPTS=$((NOPTS+1))
+      ;;
+    ?)
+      usage
+      ;;
+  esac
+done
+shift $NOPTS
+
+IMG=$1
+NEW_NAME=${2:-""}
+
+if [ "$MINIMUM" = true ] ; then
+    INPUT_WIDTH=$( identify -format '%w' $IMG )
+    echo WIDTH=$WIDTH
+    echo INPUT_WIDTH=$INPUT_WIDTH
+    if (( INPUT_WIDTH > WIDTH  )); then
+      WIDTH=$INPUT_WIDTH
+    fi
+fi
+
+if [ -z "$NEW_NAME" ]; then
+  EXT="${IMG##*.}"
+  MD5=($(md5sum $IMG))
+  NEW_NAME=$WIDTH"_"$MD5"."$EXT
+fi
+
+NEW_IMG=$DIR"/"$NEW_NAME
+convert -resize $WIDTH $IMG $NEW_IMG
+echo $NEW_IMG
