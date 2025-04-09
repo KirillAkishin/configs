@@ -5,6 +5,7 @@ export ENVS=$HOME/.local/bin/environment
 export STORAGE=$HOME/storage
 export BIN=$STORAGE/bin
 export PATH=$(printf "%s" "$PATH:$BIN:$BIN/private" | awk -v RS=':' '!a[$1]++ { if (NR > 1) printf RS; printf $1 }')
+export EDITOR="/usr/bin/nano"
 
 # dates
 DATE1=1740423837 # Пн 24 фев 2025 22:03:57 MSK
