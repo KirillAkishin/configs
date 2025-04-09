@@ -5,7 +5,8 @@ usage() {
   echo "  -h help     Print this help message"
   echo "  -d dir      Output directory"
   echo "  -w width    Set image width"
-  echo "  -m minimum  This width is minimum? (default: true)"
+  echo "  -m minimum  Is the width minimum? (default: true)"
+  echo "  -r remove   Clean up? (default: true)"
   echo
   exit 1
 }
@@ -13,9 +14,10 @@ usage() {
 WIDTH="700"
 DIR="."
 MINIMUM=true
+REMOVE=true
 
 NOPTS=0
-while getopts "hw:d:m" opt; do
+while getopts "hw:d:mr" opt; do
   case $opt in
     h)
       usage
@@ -32,6 +34,10 @@ while getopts "hw:d:m" opt; do
       MINIMUM=false
       NOPTS=$((NOPTS+1))
       ;;
+    m)
+      REMOVE=false
+      NOPTS=$((NOPTS+1))
+      ;;
     ?)
       usage
       ;;
@@ -39,29 +45,30 @@ while getopts "hw:d:m" opt; do
 done
 shift $NOPTS
 
-IMG=$1
-NEW_NAME=${2:-""}
+INPT=$1
+OUTP=${2:-""}
 
 if [ "$MINIMUM" = true ] ; then
-    INPUT_WIDTH=$( identify -format '%w\n' $IMG | head -1 )
-    echo WIDTH=$WIDTH
-    echo INPUT_WIDTH=$INPUT_WIDTH
+    INPUT_WIDTH=$( identify -format '%w\n' $INPT | head -1 )
     if (( INPUT_WIDTH > WIDTH  )); then
       WIDTH=$INPUT_WIDTH
     fi
 fi
 
-if [ -z "$NEW_NAME" ]; then
-  echo WIDTH=$WIDTH
-  EXT="${IMG##*.}"
-  echo EXT=$EXT
-  MD5=($(md5sum $IMG))
-  echo MD5=$MD5
-  NEW_NAME="_"$WIDTH"_"$MD5"."$EXT
-  echo NEW_NAME=$NEW_NAME
+if [ -z "$OUTP" ]; then
+  EXT="${INPT##*.}"
+  MD5=($(md5sum $INPT))
+  OUTP=$WIDTH"_"$MD5"."$EXT
 fi
 
-NEW_IMG=$DIR"/"$NEW_NAME
-convert -resize $WIDTH $IMG $NEW_IMG
-gifsicle -O3 --colors 16 --lossy=200 -o $NEW_NAME $NEW_IMG
-echo $NEW_IMG
+TEMP=$DIR"/."$OUTP
+convert $INPT -coalesce -resize $WIDTH"x" -deconstruct $TEMP
+echo $TEMP
+
+OUTPATH=$DIR"/"$OUTP
+gifsicle -i $TEMP -O3 --colors 16 --lossy=200 -o $OUTPATH
+echo $OUTPATH
+
+if [ "$REMOVE" = true ] ; then
+  rm $TEMP
+fi
