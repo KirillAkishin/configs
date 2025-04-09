@@ -61,14 +61,20 @@ if [ -z "$OUTP" ]; then
   OUTP=$WIDTH"_"$MD5"."$EXT
 fi
 
-TEMP=$DIR"/."$OUTP
-convert $INPT -coalesce -resize $WIDTH"x" -deconstruct $TEMP
-echo $TEMP
+OUTPATH=$DIR"/"$OUTP
+if [[ "$EXT" == "gif" ]]; then
+  TEMP=$DIR"/."$OUTP
+  convert $INPT -coalesce -resize $WIDTH"x" -deconstruct $TEMP
+  echo $TEMP
+  gifsicle -i $TEMP -O3 --colors 16 --lossy=200 -o $OUTPATH
+  echo $OUTPATH
+  if [ "$REMOVE" = true ] ; then
+    rm $TEMP
+  fi
+  exit 0
+fi
 
 OUTPATH=$DIR"/"$OUTP
-gifsicle -i $TEMP -O3 --colors 16 --lossy=200 -o $OUTPATH
+convert -resize $WIDTH"x" $INPT $OUTPATH
 echo $OUTPATH
-
-if [ "$REMOVE" = true ] ; then
-  rm $TEMP
-fi
+exit 0
