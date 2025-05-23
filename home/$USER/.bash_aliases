@@ -12,7 +12,8 @@ alias nano='nano -l'
 alias watch='watch -d'
 alias statuswatch='watch -c SYSTEMD_COLORS=1 systemctl status'
 
-alias dupes='fdupes . -m; fdupes . -t -f -1'
+alias dupes='fdupes . -mr; fdupes . -r -t -f -1'
+alias dupes-rm='fdupes -rdN .'
 alias dupes-hard='find . ! -empty -type f -exec md5sum {} + | sort | uniq -w32 -dD'
 
 # see environment variables
