@@ -1,0 +1,25 @@
+#!/bin/sh
+
+cmd="yt-dlp -t mp3 $1 -o '$STORAGE/audio/%(title)s.%(ext)s'"
+echo $cmd; eval $cmd
+
+cmd="yandex-disk sync"
+echo $cmd; eval $cmd
+
+# https://github.com/yt-dlp/yt-dlp/issues/9599
+#
+# Available only when using --download-sections and for chapter: prefix when using --split-chapters for videos with internal chapters:
+#
+# section_title (string): Title of the chapter
+# section_number (numeric): Number of the chapter within the file
+# section_start (numeric): Start time of the chapter in seconds
+# section_end (numeric): End time of the chapter in seconds
+#
+# e.g. -o "%(title)s [%(id)s] %(section_start)s-%(section_end)s.%(ext)s"
+
+
+# yt-dlp --download-sections "*start_time-end_time"
+# yt-dlp --download-sections "*10:15-inf" --download-sections "intro"
+
+
+# https://unix.stackexchange.com/questions/230481/how-to-download-portion-of-video-with-youtube-dl-command
