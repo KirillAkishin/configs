@@ -16,6 +16,12 @@ export EDITOR="/usr/bin/nano"
 DATE1=1740423837 # Пн 24 фев 2025 22:03:57 MSK
 DATE2="Jan 31, 2019" # test date
 
+# proxy
+# export https_proxy="http://usrname:passwrd@host:port"
+# export http_proxy="http://usrname:passwrd@host:port"
+# export ftp_proxy="http://usrname:passwrd@host:port"
+# export no_proxy="localhost,127.0.0.1,.localdomain,.example.com"
+
 ###################################
 
 # STORAGE=$HOME/storage
