@@ -1,4 +1,9 @@
 # ~/.bashrc
+#
+# This file is similar to /etc/environment, but the settings apply only to this user
+#
+
+###################################
 
 # common
 export ENVS=$HOME/.local/bin/environment
@@ -10,7 +15,6 @@ export EDITOR="/usr/bin/nano"
 # dates
 DATE1=1740423837 # Пн 24 фев 2025 22:03:57 MSK
 DATE2="Jan 31, 2019" # test date
-
 
 ###################################
 
