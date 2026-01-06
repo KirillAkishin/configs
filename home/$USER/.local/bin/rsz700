@@ -6,7 +6,7 @@ usage() {
   echo "  -d dir      Output directory"
   echo "  -w width    Set image width"
   echo "  -m minimum  Is the width minimum? (default: true)"
-  echo "  -r remove   Clean up? (default: true)"
+  echo "  -r remove   Clean up mode (default: true)"
   echo
   exit 1
 }
@@ -64,10 +64,12 @@ fi
 OUTPATH=$DIR"/"$OUTP
 if [[ "$EXT" == "gif" ]]; then
   TEMP=$DIR"/."$OUTP
-  convert $INPT -coalesce -resize $WIDTH"x" -deconstruct $TEMP
-  echo $TEMP
-  gifsicle -i $TEMP -O3 --colors 16 --lossy=200 -o $OUTPATH
-  echo $OUTPATH
+  CMD="convert $INPT -coalesce -resize $WIDTH"x" -deconstruct $TEMP"
+  echo $CMD
+  eval $CMD
+  CMD="gifsicle -i $TEMP -O3 --colors 16 --lossy=200 -o $OUTPATH"
+  echo $CMD
+  eval $CMD
   if [ "$REMOVE" = true ] ; then
     rm $TEMP
   fi
@@ -75,6 +77,7 @@ if [[ "$EXT" == "gif" ]]; then
 fi
 
 OUTPATH=$DIR"/"$OUTP
-convert -resize $WIDTH"x" $INPT $OUTPATH
-echo $OUTPATH
+CMD="convert -resize $WIDTH"x" $INPT $OUTPATH"
+echo $CMD
+eval $CMD
 exit 0
