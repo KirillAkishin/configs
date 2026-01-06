@@ -7,6 +7,7 @@ usage() {
   echo "  -w width    Set image width"
   echo "  -m minimum  Is the width minimum? (default: true)"
   echo "  -r remove   Clean up mode (default: true)"
+  echo "  -l lossy    Lossy compression mode (default: true)"
   echo
   exit 1
 }
@@ -15,9 +16,10 @@ WIDTH="700"
 DIR="."
 MINIMUM=true
 REMOVE=true
+LOSSY=true
 
 NOPTS=0
-while getopts "hw:d:mr" opt; do
+while getopts "hw:d:mrl" opt; do
   case $opt in
     h)
       usage
@@ -36,6 +38,10 @@ while getopts "hw:d:mr" opt; do
       ;;
     r)
       REMOVE=false
+      NOPTS=$((NOPTS+1))
+      ;;
+    l)
+      LOSSY=false
       NOPTS=$((NOPTS+1))
       ;;
     ?)
@@ -67,7 +73,11 @@ if [[ "$EXT" == "gif" ]]; then
   CMD="convert $INPT -coalesce -resize $WIDTH"x" -deconstruct $TEMP"
   echo $CMD
   eval $CMD
-  CMD="gifsicle -i $TEMP -O3 --colors 16 --lossy=200 -o $OUTPATH"
+  if [ "$LOSSY" = true ] ; then
+    CMD="gifsicle -i $TEMP -O3 --colors 16 --lossy=200 -o $OUTPATH"
+  else
+    CMD="gifsicle -i $TEMP -o $OUTPATH"
+  fi
   echo $CMD
   eval $CMD
   if [ "$REMOVE" = true ] ; then
