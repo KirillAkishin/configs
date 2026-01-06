@@ -34,7 +34,7 @@ while getopts "hw:d:mr" opt; do
       MINIMUM=false
       NOPTS=$((NOPTS+1))
       ;;
-    m)
+    r)
       REMOVE=false
       NOPTS=$((NOPTS+1))
       ;;
