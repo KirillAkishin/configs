@@ -6,7 +6,7 @@
 ###################################
 
 # common
-export ENVS=$HOME/.local/bin/environment
+export ENVS=$HOME/.bash_env
 export STORAGE=$HOME/storage
 export BIN=$STORAGE/bin
 export PATH=$(printf "%s" "$PATH:$BIN:$BIN/private" | awk -v RS=':' '!a[$1]++ { if (NR > 1) printf RS; printf $1 }')
