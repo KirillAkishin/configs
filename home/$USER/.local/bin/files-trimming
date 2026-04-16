@@ -1,0 +1,82 @@
+#!/bin/bash
+
+usage() {
+    echo "Usage: $0 [OPTION]"
+    echo "It removes the first [LEAD] and last [TAIL] characters, leaving the following [BODY] characters from all [EXT] files in the current folder"
+    echo "  -h help     Print this help message"
+    echo "  -v verb     Verbose mode"
+    echo "  -l lead     Number of characters in the lead to remove (default: 0)"
+    echo "  -t tail     Number of characters in the tail to remove (default: 0)"
+    echo "  -b body     Number of characters in the body to remain (default: 255)"
+    echo "  -e ext      File extension filter (default: ''; example: '.txt')"
+    echo
+    exit 1
+}
+
+
+LEAD=0
+TAIL=0
+BODY=255
+EXT=''
+NARGS=$#
+VERBOSE=false
+
+
+while getopts "l:t:b:e:vh" opt; do
+  case $opt in
+    l)
+      LEAD=${OPTARG}
+      NARGS=$((NARGS-2))
+      ;;
+    t)
+      TAIL=${OPTARG}
+      NARGS=$((NARGS-2))
+      ;;
+    b)
+      BODY=${OPTARG}
+      NARGS=$((NARGS-2))
+      ;;
+    e)
+      EXT=${OPTARG}
+      NARGS=$((NARGS-2))
+      ;;
+    v)
+      VERBOSE=true
+      NARGS=$((NARGS-1))
+      ;;
+    h)
+      usage
+      ;;
+    ?)
+      usage
+      ;;
+  esac
+done
+
+
+if [ $NARGS -ne 0 ]; then
+    usage
+    exit 1
+fi
+
+
+for file in *$EXT; do
+    if [ "$TAIL" -eq 0 ]; then
+      new_file="${file:$LEAD}"
+    else
+      new_file="${file:$LEAD:-$TAIL}"
+    fi
+
+    new_file="${new_file:0:$BODY}"
+    new_file=$(echo "$new_file" | sed -e 's/^[[:space:]]*//')
+    new_file=$(echo "$new_file" | sed -e 's/[[:space:]]*$//')
+
+    if [[ "$VERBOSE" == "true" ]]; then
+      if [[ "$file" == "$new_file" ]]; then
+        echo \'$file\'
+      else
+        echo \'$file\' → \'$new_file\'
+      fi
+    fi
+    mv -i "$file" "$new_file"
+done
