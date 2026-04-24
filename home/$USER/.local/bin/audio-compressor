@@ -13,6 +13,18 @@ for f in *.mp3; do
   ffmpeg -i "$f" -b:a 32k "compressed/$f"
 done
 
+# OR
+
+# 1) Reduce Bitrate (File Size):
+ffmpeg -i input.mp3 -b:a 64k output.mp3 #(Sets bitrate to 64 kbps).
+
+# 2) Change Sample Rate:
+ffmpeg -i input.wav -ar 22050 output.wav #(Lowers sample rate to 22.05 kHz).
+
+# 3) Dynamic Range Compression (Volume Leveling):
+ffmpeg -i input.mp3 -af "acompressor=threshold=-12dB:ratio=4" output.mp3.
+
+
 
 #################################################################
 usage() {
