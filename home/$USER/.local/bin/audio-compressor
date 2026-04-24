@@ -2,7 +2,7 @@
 
 usage() {
     echo "Usage: $0 [OPTION]"
-    echo "Example: $0 -q 6 -d compressed_dir # for muscic"
+    echo "Example: $0 -q 6 -d compressed-q6 # for muscic"
     echo "Example: $0 -b 64 -m -p '_cmprssd-mono-64k_' # for podcasts"
     echo
     echo "Convert all MP3s in a folder to compressed MP3s"
@@ -10,7 +10,7 @@ usage() {
     echo "  -q quality    Quality-based method (VBR): -q:a [QUALITY]. Scale 0-9; 2 is high quality. (default: '')"
     echo "  -m mono       Mono conversion (default: false)"
     echo "  -p prefix     NEW_NAME = [PREFIX] + OLD_NAME (default: '_')"
-    echo "  -d directory  If it is not empty, the script compresses it into this [DIR] (default: '')."
+    echo "  -d directory  If it is not empty, the script compresses it into this [DIR] (default: 'compressed')."
     echo "  -o overwrite  Overwrite output files without prompting? (default: false)"
     echo "  -v verbose    Verbose mode (default: false)"
     echo "  -h help       Print this help message"
@@ -25,7 +25,7 @@ MONO=false
 BITRATE=''
 QUALITY=''
 PREFIX='_'
-DIR=''
+DIR='compressed'
 FLAGS=''
 PARAMS=''
 NARGS=$#
@@ -114,8 +114,6 @@ for file in *.{mp3,wav}; do
   [[ -e "$file" ]] || continue # Skip if no matches found
 #   EXT="${file##*.}"
 #   echo EXT=$EXT
-#   ffmpeg -i "$file" -b:a $BITRATE "$PREFIX($EXT,$count)${file%.*}.mp3"
-#   ffmpeg -n -i "$file" -b:a $BITRATE "$PREFIX${file%.*}.mp3"
   ffmpeg $FLAGS -i "$file" -loglevel error $PARAMS "$PREFIX${file%.*}.mp3"
   ((count++))
 done
