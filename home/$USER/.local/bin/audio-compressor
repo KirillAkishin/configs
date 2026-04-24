@@ -2,10 +2,16 @@
 
 usage() {
     echo "Usage: $0 [OPTION]"
+    echo "Example: $0 -q 6 -d compressed_dir # for muscic"
+    echo "Example: $0 -b 64 -m -p '_cmprssd-mono-64k_' # for podcasts"
+    echo
     echo "Convert all MP3s in a folder to compressed MP3s"
-    echo "  -b bitrate    Reduce bitrate to [BITRATE] kbps (default: 64)"
+    echo "  -b bitrate    Reduce bitrate to [BITRATE] kbps (default: '')"
+    echo "  -q quality    Quality-based method (VBR): -q:a [QUALITY]. Scale 0-9; 2 is high quality. (default: '')"
+    echo "  -m mono       Mono conversion (default: false)"
     echo "  -p prefix     NEW_NAME = [PREFIX] + OLD_NAME (default: '_')"
     echo "  -d directory  If it is not empty, the script compresses it into this [DIR] (default: '')."
+    echo "  -o overwrite  Overwrite output files without prompting? (default: false)"
     echo "  -v verbose    Verbose mode (default: false)"
     echo "  -h help       Print this help message"
     echo
@@ -14,15 +20,24 @@ usage() {
 
 
 VERBOSE=false
-BITRATE=64k
+OVERWRITE=false
+MONO=false
+BITRATE=''
+QUALITY=''
 PREFIX='_'
 DIR=''
+FLAGS=''
+PARAMS=''
 NARGS=$#
 
-while getopts "b:p:d:vh" opt; do
+while getopts "b:q:p:d:movh" opt; do
   case $opt in
     b)
       BITRATE=${OPTARG}k
+      NARGS=$((NARGS-2))
+      ;;
+    q)
+      QUALITY=${OPTARG}k
       NARGS=$((NARGS-2))
       ;;
     p)
@@ -32,6 +47,14 @@ while getopts "b:p:d:vh" opt; do
     d)
       DIR=${OPTARG}
       NARGS=$((NARGS-2))
+      ;;
+    m)
+      MONO=true
+      NARGS=$((NARGS-1))
+      ;;
+    o)
+      OVERWRITE=true
+      NARGS=$((NARGS-1))
       ;;
     v)
       VERBOSE=true
@@ -51,62 +74,80 @@ if [ $NARGS -ne 0 ]; then
     exit 1
 fi
 
-
-if [[ "$VERBOSE" == "true" ]]; then
-  echo bitrate=$BITRATE
-  echo prefix=$PREFIX
-  echo dir=$DIR
-  echo verbose=$VERBOSE
-  echo nargs=$NARGS
-  echo mode=$MODE
-  echo
-fi
-
-
 if [[ -n "$DIR" ]]; then
   mkdir -p $DIR
   PREFIX=$DIR"/"$PREFIX
 fi
 
-count=1
+if [[ "$OVERWRITE" == "true" ]]; then
+  FLAGS=$FLAGS" -y"
+fi
+
+if [[ "$MONO" == "true" ]]; then
+  PARAMS=$PARAMS" -ac 1"
+fi
+
+if [[ -n "$BITRATE" ]]; then
+  PARAMS=$PARAMS" -b:a $BITRATE"
+fi
+
+if [[ -n "$QUALITY" ]]; then
+  PARAMS=$PARAMS" -codec:a libmp3lame -q:a $QUALITY"
+fi
+
+
+if [[ "$VERBOSE" == "true" ]]; then
+  echo bitrate=$BITRATE
+  echo prefix=$PREFIX
+  echo dir=$DIR
+  echo mono=$MONO
+  echo overwrite=$OVERWRITE
+  echo verbose=$VERBOSE
+  echo nargs=$NARGS
+  echo flags=$FLAGS
+  echo params=$PARAMS
+  echo mode=$MODE
+fi
+
+count=0
 for file in *.{mp3,wav}; do
   [[ -e "$file" ]] || continue # Skip if no matches found
 #   EXT="${file##*.}"
 #   echo EXT=$EXT
 #   ffmpeg -i "$file" -b:a $BITRATE "$PREFIX($EXT,$count)${file%.*}.mp3"
-  ffmpeg -n -i "$file" -b:a $BITRATE "$PREFIX${file%.*}.mp3"
+#   ffmpeg -n -i "$file" -b:a $BITRATE "$PREFIX${file%.*}.mp3"
+  ffmpeg $FLAGS -i "$file" -loglevel error $PARAMS "$PREFIX${file%.*}.mp3"
   ((count++))
 done
 
-
-# cmd='ffmpeg -i "$file" -b:a $BITRATE "$PREFIX($EXT,$count)${file%.*}.mp3"'
-# echo $cmd
-# $cmd
-
-if [[ "$MODE" -eq 1 ]]; then
-  # 1)
-  ffmpeg -i "$file" -b:a $BITRATE "$PREFIX($EXT,$count)${file%.*}.mp3"
-elif [[ "$MODE" -eq 2 ]]; then
-  # 2) Reduce Bitrate (File Size). Sets bitrate to 64 kbps:
-  ffmpeg -i input.mp3 -b:a 64k output.mp3
-elif [[ "$MODE" -eq 3 ]]; then
-  # 3) Lowers sample rate to 22.05 kHz (standard is 44.1 kHz). Change Sample Rate:
-  ffmpeg -i input.wav -ar 22050 output.wav
-elif [[ "$MODE" -eq 4 ]]; then
-  # 4) Dynamic Range Compression (Volume Leveling):
-  ffmpeg -i input.mp3 -af "acompressor=threshold=-12dB:ratio=4" output.mp3
-elif [[ "$MODE" -eq 5 ]]; then
-  # 5) Converts audio to a single channel (mono).
-  ffmpeg -i input.mp3 -ac 1 output.mp3
-elif [[ "$MODE" -eq 6 ]]; then
-  # 6) Variable Bitrate (VBR). AvgBitRate (-q:a Value): ~65kbps (9), ~115kbps (6), ~245kbps (0).
-  ffmpeg -i input.mp3 -codec:a libmp3lame -q:a 5 output.mp3
-elif [[ "$MODE" -eq 7 ]]; then
-  # 7)
-  ffmpeg -i input.mp3 output.mp3
-else
-  echo
+if [ $count -gt 0 ]; then
+  echo "OK ($count files)"
 fi
+
+
+
+# if [[ "$MODE" -eq 1 ]]; then
+#   # 1)
+#   ffmpeg -i "$file" -b:a $BITRATE "$PREFIX($EXT,$count)${file%.*}.mp3"
+#   ffmpeg -i input.mp3 output.mp3
+# elif [[ "$MODE" -eq 2 ]]; then
+#   # 2) Reduce Bitrate (File Size). Sets bitrate to 64 kbps:
+#   ffmpeg -i input.mp3 -b:a 64k output.mp3
+# elif [[ "$MODE" -eq 3 ]]; then
+#   # 3) Lowers sample rate to 22.05 kHz (standard is 44.1 kHz). Change Sample Rate:
+#   ffmpeg -i input.wav -ar 22050 output.wav
+# elif [[ "$MODE" -eq 4 ]]; then
+#   # 4) Dynamic Range Compression (Volume Leveling):
+#   ffmpeg -i input.mp3 -af "acompressor=threshold=-12dB:ratio=4" output.mp3
+# elif [[ "$MODE" -eq 5 ]]; then
+#   # 5) Converts audio to a single channel (mono).
+#   ffmpeg -i input.mp3 -ac 1 output.mp3
+# elif [[ "$MODE" -eq 6 ]]; then
+#   # 6) Variable Bitrate (VBR). AvgBitRate (-q:a Value): ~65kbps (9), ~115kbps (6), ~245kbps (0).
+#   ffmpeg -i input.mp3 -codec:a libmp3lame -q:a 5 output.mp3
+# else
+#   echo
+# fi
 
 
 # Strategies
