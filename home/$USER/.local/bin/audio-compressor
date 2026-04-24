@@ -2,7 +2,7 @@
 
 usage() {
     echo "Usage: $0 [OPTION]"
-    echo "Example: $0 -q 6 -d compressed-q6 # for muscic"
+    echo "Example: $0 -q 5 -p '' -d compressed-q5 # for muscic"
     echo "Example: $0 -b 64 -m -p '_cmprssd-mono-64k_' # for podcasts"
     echo
     echo "Convert all MP3s in a folder to compressed MP3s"
