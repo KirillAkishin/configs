@@ -70,47 +70,46 @@ fi
 
 count=1
 for file in *.{mp3,wav}; do
-  EXT="${file##*.}"
-  echo EXT=$EXT
   [[ -e "$file" ]] || continue # Skip if no matches found
-  ffmpeg -i "$file" -b:a $BITRATE "$PREFIX($EXT,$count)${file%.*}.mp3"
+#   EXT="${file##*.}"
+#   echo EXT=$EXT
+#   ffmpeg -i "$file" -b:a $BITRATE "$PREFIX($EXT,$count)${file%.*}.mp3"
+  ffmpeg -n -i "$file" -b:a $BITRATE "$PREFIX${file%.*}.mp3"
   ((count++))
 done
 
 
+# cmd='ffmpeg -i "$file" -b:a $BITRATE "$PREFIX($EXT,$count)${file%.*}.mp3"'
+# echo $cmd
+# $cmd
+
 if [[ "$MODE" -eq 1 ]]; then
-  # 1) Reduce Bitrate (File Size)
-  ffmpeg -i input.mp3 -b:a 64k output.mp3 #(Sets bitrate to 64 kbps)
+  # 1)
+  ffmpeg -i "$file" -b:a $BITRATE "$PREFIX($EXT,$count)${file%.*}.mp3"
 elif [[ "$MODE" -eq 2 ]]; then
-  # 2) Change Sample Rate:
-  ffmpeg -i input.wav -ar 22050 output.wav #(Lowers sample rate to 22.05 kHz).
+  # 2) Reduce Bitrate (File Size). Sets bitrate to 64 kbps:
+  ffmpeg -i input.mp3 -b:a 64k output.mp3
 elif [[ "$MODE" -eq 3 ]]; then
-  # 3) Dynamic Range Compression (Volume Leveling):
+  # 3) Lowers sample rate to 22.05 kHz (standard is 44.1 kHz). Change Sample Rate:
+  ffmpeg -i input.wav -ar 22050 output.wav
+elif [[ "$MODE" -eq 4 ]]; then
+  # 4) Dynamic Range Compression (Volume Leveling):
   ffmpeg -i input.mp3 -af "acompressor=threshold=-12dB:ratio=4" output.mp3
+elif [[ "$MODE" -eq 5 ]]; then
+  # 5) Converts audio to a single channel (mono).
+  ffmpeg -i input.mp3 -ac 1 output.mp3
+elif [[ "$MODE" -eq 6 ]]; then
+  # 6) Variable Bitrate (VBR). AvgBitRate (-q:a Value): ~65kbps (9), ~115kbps (6), ~245kbps (0).
+  ffmpeg -i input.mp3 -codec:a libmp3lame -q:a 5 output.mp3
+elif [[ "$MODE" -eq 7 ]]; then
+  # 7)
+  ffmpeg -i input.mp3 output.mp3
 else
   echo
 fi
 
 
-# for file in *$EXT; do
-#     if [ "$TAIL" -eq 0 ]; then
-#       new_file="${file:$LEAD}"
-#     else
-#       new_file="${file:$LEAD:-$TAIL}"
-#     fi
-#
-#     new_file="${new_file:0:$BODY}"
-#     new_file=$(echo "$new_file" | sed -e 's/^[[:space:]]*//')
-#     new_file=$(echo "$new_file" | sed -e 's/[[:space:]]*$//')
-#
-#     if [[ "$VERBOSE" == "true" ]]; then
-#       if [[ "$file" == "$new_file" ]]; then
-#         echo \'$file\'
-#       else
-#         echo \'$file\' → \'$new_file\'
-#       fi
-#     fi
-#     mv -i "$file" "$new_file"
-# done
-
-
+# Strategies
+# For Music: Use VBR with -q:a 4 or -q:a 5 for a good balance of size and fidelity.
+# For Voice/Podcasts: Convert to mono (-ac 1) and use a bitrate between 48k and 64k.
+# For Maximum Savings: Consider switching to Opus (-c:a libopus) if your playback device supports it, as it is much more efficient than MP3 at low bitrates.
