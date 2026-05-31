@@ -6,3 +6,10 @@ from yt_dlp import main
 if __name__ == '__main__':
     sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$', '', sys.argv[0])
     sys.exit(main())
+
+
+# Examples
+# yt-dlp -f "bestvideo+bestaudio/best" [URL]
+# yt-dlp -f 'b.2' [URL] --proxy [PROXY]
+# yt-dlp --list-formats [URL] --proxy [PROXY]
+# yt-dlp -f 'ba' -x --audio-format mp3 [URL] --proxy [PROXY]
