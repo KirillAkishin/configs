@@ -13,3 +13,5 @@ if __name__ == '__main__':
 # yt-dlp -f 'b.2' [URL] --proxy [PROXY]
 # yt-dlp --list-formats [URL] --proxy [PROXY]
 # yt-dlp -f 'ba' -x --audio-format mp3 [URL] --proxy [PROXY]
+
+# python -m pip install --upgrade yt-dlp
