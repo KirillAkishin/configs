@@ -68,8 +68,10 @@ alias nf='clear && neofetch --jp2a $HOME/.config/neofetch/pic.png --disable titl
 alias alias-edit="nano $HOME/.bash_aliases"
 
 ## python-is-python3
-alias python='python3'
-alias pip='pip3'
+alias python='python3.12'
+alias python3='python3.12'
+alias pip='pip3.12'
+alias pip3='pip3.12'
 alias pyre='pip freeze > requirements.txt'
 
 ## translate-shell
